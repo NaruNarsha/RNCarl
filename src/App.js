@@ -1,11 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import Button, { ButtonTypes } from "./components/Button";
+import { useState } from "react";
 
 const App = () => {
   const isError = false;
 
-  let result = 0;
+  const [result, setResult] = useState(0);
+  console.log("rendering : ", result);
 
   return (
     <View style={styles.container}>
@@ -31,7 +33,14 @@ const App = () => {
       <Button
         title="+"
         onPress={() => {
-          result = result + 1;
+          setResult((prevState) => {
+            console.log("prevState 1 :", prevState);
+            return prevState + 1;
+          });
+          setResult((prevState) => {
+            console.log("prevState 2 :", prevState);
+            return prevState + 1;
+          });
           console.log("+", result);
         }}
         buttonStyle={styles.button}
@@ -43,7 +52,7 @@ const App = () => {
       <Button
         title="-"
         onPress={() => {
-          result = result - 1;
+          setResult(result - 1);
           console.log("-", result);
         }}
         buttonStyle={styles.button}
