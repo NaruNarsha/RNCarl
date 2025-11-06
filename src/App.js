@@ -1,21 +1,54 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import Button from "./components/Button";
+import Button, { ButtonTypes } from "./components/Button";
 
 const App = () => {
   const isError = false;
 
+  let result = 0;
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text style={[styles.text, styles.error]}> Calc Test App </Text>
+      <Text style={styles.text}>{result}</Text>
       {/*
       <Text style={[styles.error, styles.text]}> StyleSheet </Text>
       <Text style={styles.error}> Error </Text>
       <Text style={[styles.text, isError && styles.error]}>Error two</Text>
       */}
-      <Button onPress={() => console.log("click!!")} color="purple" />
-      <Button title="title Button" />
+      <Button
+        title="1"
+        onPress={() => console.log("1")}
+        buttonStyle={styles.button}
+        buttonType={ButtonTypes.NUMBER}
+      />
+      <Button
+        title="0"
+        onPress={() => console.log("0")}
+        buttonStyle={styles.button}
+        buttonType={ButtonTypes.NUMBER}
+      />
+      <Button
+        title="+"
+        onPress={() => {
+          result = result + 1;
+          console.log("+", result);
+        }}
+        buttonStyle={styles.button}
+        buttonType={ButtonTypes.OPERATOR}
+      />
+
+      <View style={{ paddingVertical: 10 }}></View>
+
+      <Button
+        title="-"
+        onPress={() => {
+          result = result - 1;
+          console.log("-", result);
+        }}
+        buttonStyle={styles.button}
+        buttonType={ButtonTypes.OPERATOR}
+      />
     </View>
   );
 };
@@ -36,9 +69,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    fontSize: 30,
+    fontSize: 60,
     fontWeigth: "700",
-    color: "green",
+  },
+  button: {
+    width: 100,
+    height: 100,
   },
   error: {
     fontSize: 30,
