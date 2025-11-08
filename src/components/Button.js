@@ -7,6 +7,7 @@ const ButtonTypes = {
 };
 
 const Button = ({ title, onPress, buttonStyle, buttonType }) => {
+
   return (
     <Pressable
       style={({ pressed }) => [
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: "center",
     alignItems: "center",
-  },
+    },
   title: {
     color: "#ffffff",
     fontSize: 50,

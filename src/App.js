@@ -9,8 +9,15 @@ const App = () => {
 
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
-  console.log("window width : ", windowWidth);
-  console.log("window height : ", windowHeight);
+  // console.log("window width : ", windowWidth);
+  // console.log("window height : ", windowHeight);
+
+  const width = (windowWidth - 5) / 4;
+  // console.log("button width : ", width);
+
+  
+
+
 
   return (
     <View style={styles.container}>
@@ -22,11 +29,54 @@ const App = () => {
 
       <View style={styles.buttonContainer}>
         <View style={styles.leftPad}>
-          <View style={styles.number}>{/**  숫자버튼 */}</View>
-          <View style={styles.bottom}>{/**  0, = 버튼 */}</View>
+          <View style={styles.number}>
+            {[1,2,3,4,5,6,7,8,9].map((num) => (
+              <Button
+                key={num}
+                title={num.toString()}
+                onPress={()=>{}}
+                buttonStyle={{width: width, height: width, marginBottom: 1}} 
+                buttonType={ButtonTypes.NUMBER}
+              />
+            ))}
+          </View>
+
+          <View style={styles.bottom}>
+            <Button
+              title="0"
+              onPress={()=>{}}
+              buttonStyle={{width: width * 2, height: width, marginTop: 1}} 
+              buttonType={ButtonTypes.NUMBER}
+            />
+            <Button
+              title="="
+              onPress={()=>{}}
+              buttonStyle={{width: width, height: width, marginTop: 1}} 
+              buttonType={ButtonTypes.OPERATOR}
+            />
+          </View>
         </View>
 
-        <View>{/**  연산 버튼 */}</View>
+        <View>
+          <Button
+            title="C"
+            onPress={()=>{}}
+            buttonStyle={{width, height: width, marginTop: 1}}
+            buttonType={ButtonTypes.OPERATOR}
+          />
+          <Button
+            title="-"
+            onPress={()=>{}}
+            buttonStyle={{width, height:width, marginTop : 1}} 
+            buttonType={ButtonTypes.OPERATOR}
+          />
+          <Button
+            title="+"
+            onPress={()=>{}}
+            buttonStyle={{width, height:width * 2 + 1, marginTop : 1}} 
+            buttonType={ButtonTypes.OPERATOR}
+          />
+        </View>
       </View>
     </View>
   );
@@ -62,12 +112,23 @@ const styles = StyleSheet.create({
     alignItem: "flex-end",
   },
   buttonContainer: {
-    flex: 1,
-    backgroundColor: "#A584FC",
+    backgroundColor: "#000000",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
-  leftPad: {},
-  number: {},
-  bottom: {},
+  leftPad: {
+    backgroundColor: "green",
+    width: "75%",
+  },
+  number: {
+    flexWrap : "wrap-reverse",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  bottom: {
+    flexDirection: "row",
+    justifyContent: "evenly",
+  },
 });
 
 export default App;
