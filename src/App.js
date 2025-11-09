@@ -15,7 +15,11 @@ const App = () => {
   const width = (windowWidth - 5) / 4;
   // console.log("button width : ", width);
 
-  
+  const onPressNumber = (number) => {
+    setResult((prevNumber) => {
+      return prevNumber * 10 + number;
+    });
+  }
 
 
 
@@ -23,10 +27,14 @@ const App = () => {
     <View style={styles.container}>
       <StatusBar style="light" />
 
+      {/* Result Display Area */}
       <View style={styles.resultContainer}>
-        <Text style={styles.text}>{result}</Text>
+        <Text style={styles.text}>
+          {result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        </Text>
       </View>
 
+      {/* Button Area */}
       <View style={styles.buttonContainer}>
         <View style={styles.leftPad}>
           <View style={styles.number}>
@@ -34,7 +42,7 @@ const App = () => {
               <Button
                 key={num}
                 title={num.toString()}
-                onPress={()=>{}}
+                onPress={()=>{onPressNumber(num)}}
                 buttonStyle={{width: width, height: width, marginBottom: 1}} 
                 buttonType={ButtonTypes.NUMBER}
               />
@@ -44,8 +52,12 @@ const App = () => {
           <View style={styles.bottom}>
             <Button
               title="0"
-              onPress={()=>{}}
-              buttonStyle={{width: width * 2, height: width, marginTop: 1}} 
+              onPress={()=>{onPressNumber(0)}}
+              buttonStyle={{
+                width: width * 2, 
+                height: width, 
+                marginTop: 1
+              }} 
               buttonType={ButtonTypes.NUMBER}
             />
             <Button
