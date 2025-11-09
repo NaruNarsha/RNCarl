@@ -3,23 +3,103 @@ import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import Button, { ButtonTypes } from "./components/Button";
 import { useState } from "react";
 
+const Operators = {
+  CLEAR: "C",
+  PLUS: "+",
+  MINUS: "-",
+  EQUAL: "=",
+}
+
+
 const App = () => {
   const [result, setResult] = useState(0);
+  const [formula, setFormula] = useState([]);
+
   console.log("rendering : ", result);
 
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
-  // console.log("window width : ", windowWidth);
-  // console.log("window height : ", windowHeight);
-
   const width = (windowWidth - 5) / 4;
-  // console.log("button width : ", width);
 
+
+  // 숫자 버튼을 눌렀을 때 호출되는 함수
   const onPressNumber = (number) => {
-    setResult((prevNumber) => {
-      return prevNumber * 10 + number;
+    const last = formula[formula.length - 1];
+
+    if(isNaN(last)){
+      setResult(number);
+      setFormula((prev) => [...prev, number]);
+      // [...prev, number]는 ES6 스프레드 연산자:
+      //  - prev 배열의 모든 요소를 새 배열로 복사한 뒤, 마지막에 number를 추가합니다.
+      //  - 결과는 이전 배열을 직접 변경하지 않고(불변성 유지) 새로운 배열을 생성합니다.
+    }
+    else{
+      const newNumber = (last ?? 0) * 10 + number;
+      setResult(newNumber);
+      setFormula((prev) => {
+        prev.pop();
+        return[...prev, newNumber];
+      });
+    }
+  };
+
+
+  // 연산관련 버튼을 눌렀을 때 호출되는 함수
+  const onPressOperator = (operator) => {
+    switch(operator){
+      
+      case Operators.CLEAR:
+        setFormula([]);
+        setResult(0);
+        return;
+
+      case Operators.EQUAL:
+        console.log("onPressOperator - Operators.EQUAL");
+        calculate();
+        return;
+
+      default:
+        const last = formula[formula.length - 1];
+        if([Operators.PLUS, Operators.MINUS].includes(last)){
+          setFormula(()=>{
+            prev.pop();
+            return [...prev, operator];
+          });
+      }
+      else{
+        setFormula((prev) => [...prev, operator]);
+      }
+    }
+  };
+
+
+  const calculate = () => {
+    let calculatedNumber = 0;
+    let operator = "";
+
+    console.log("formula - ", formula);
+
+    formula.forEach((value) => {
+      if([Operators.PLUS, Operators.MINUS].includes(value)){
+        operator = value;
+      }
+      else{
+        if(operator === Operators.PLUS){
+          calculatedNumber += value;
+        }
+        else if(operator === Operators.MINUS){
+          calculatedNumber -= value;
+        }
+        else{
+          calculatedNumber = value;
+        }
+      }
     });
-  }
+
+    setResult(calculatedNumber);
+    setFormula([]);
+  };
+
 
 
 
@@ -61,30 +141,30 @@ const App = () => {
               buttonType={ButtonTypes.NUMBER}
             />
             <Button
-              title="="
-              onPress={()=>{}}
-              buttonStyle={{width: width, height: width, marginTop: 1}} 
+              title= {Operators.EQUAL}
+              onPress={()=>{onPressOperator(Operators.EQUAL)}}
               buttonType={ButtonTypes.OPERATOR}
+              buttonStyle={{width: width, height: width, marginTop: 1}} 
             />
           </View>
         </View>
 
         <View>
           <Button
-            title="C"
-            onPress={()=>{}}
+            title = {Operators.CLEAR}
+            onPress={()=>{onPressOperator(Operators.CLEAR)}}
             buttonStyle={{width, height: width, marginTop: 1}}
             buttonType={ButtonTypes.OPERATOR}
           />
           <Button
-            title="-"
-            onPress={()=>{}}
+            title={Operators.MINUS}
+            onPress={()=>{onPressOperator(Operators.MINUS)}}
             buttonStyle={{width, height:width, marginTop : 1}} 
             buttonType={ButtonTypes.OPERATOR}
           />
           <Button
-            title="+"
-            onPress={()=>{}}
+            title= {Operators.PLUS}
+            onPress={()=>{onPressOperator(Operators.PLUS)}}
             buttonStyle={{width, height:width * 2 + 1, marginTop : 1}} 
             buttonType={ButtonTypes.OPERATOR}
           />
